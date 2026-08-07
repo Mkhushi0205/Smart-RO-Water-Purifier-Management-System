@@ -1,0 +1,258 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: #f5f5f5;
+    color: #333;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 8%;
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .08);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo img {
+    width: 70px;
+    height: 70px;
+}
+
+.logo h2 {
+    color: #0077b6;
+}
+
+.logo-text p {
+    color: #0289d2;
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.home-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #0077b6;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all .3s ease;
+    cursor: pointer;
+}
+
+.home-btn:hover {
+    background: #005f87;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0, 119, 182, .3);
+}
+
+.home-btn:active {
+    transform: scale(.98);
+}
+
+.ai-hero {
+    text-align: center;
+    padding: 70px 10%;
+}
+
+.ai-hero h1 {
+    font-size: 48px;
+    color: #0077b6;
+    margin-bottom: 15px;
+}
+
+.ai-hero p {
+    font-size: 20px;
+    color: #666;
+    max-width: 700px;
+    margin: auto;
+}
+
+.chat-container {
+    width: 90%;
+    max-width: 850px;
+    margin: 40px auto;
+    background: #fff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .12);
+    overflow: hidden;
+}
+
+.chat-box {
+    height: 420px;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f8fbfb;
+}
+
+.bot-message {
+    background: #0077b6;
+    color: #fff;
+    padding: 15px;
+    width: fit-content;
+    max-width: 80%;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+
+.user-message {
+    background: #e3f2fd;
+    padding: 15px;
+    margin-left: auto;
+    width: fit-content;
+    max-width: 80%;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+
+.chat-input {
+    display: flex;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input input {
+    flex: 1;
+    border: none;
+    color: #333;
+    padding: 18px;
+    font-size: 16px;
+    outline: none;
+}
+
+.chat-input button {
+    border: none;
+    background: #0077b6;
+    color: white;
+    padding: 0 30px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.chat-input button:hover {
+    background: #005f87;
+}
+
+.ai-features {
+    padding: 70px 8%;
+}
+
+.ai-features h2 {
+    text-align: center;
+    color: #0077b6;
+    font-size: 38px;
+    margin-bottom: 40px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+    transition: .3s;
+    text-align: center;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+}
+
+.feature-card h3 {
+    color: #0077b6;
+    margin-bottom: 15px;
+}
+
+.feature-card p {
+    color: #666;
+    line-height: 1.7;
+}
+
+.popular {
+    padding: 60px 8%;
+}
+
+.popular h2 {
+    text-align: center;
+    color: #0077b6;
+    margin-bottom: 35px;
+}
+
+.question-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.question-list button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 30px;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.question-list button:hover {
+    background: #0393e1;
+    color: white;
+}
+
+footer {
+    background: #0077b6;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+@media(max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .ai-hero h1 {
+        font-size: 34px;
+    }
+
+    .ai-hero p {
+        font-size: 16px;
+    }
+
+    .chat-box {
+        height: 300px;
+    }
+
+    .chat-input {
+        flex-direction: column;
+    }
+
+    .chat-input button {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}

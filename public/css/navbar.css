@@ -1,0 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #f7fbff;
+    color: #172b4d;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* header */
+
+.header {
+    width: 100%;
+    min-height: 80px;
+    padding: 12px 7%;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5edf5;
+}
+
+/* logo section */
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.logo {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+}
+
+.logo-text h2 {
+    font-size: 21px;
+    color: #075985;
+    line-height: 1.2;
+}
+
+.logo-text p {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* header buttons */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.login-btn, 
+.register-btn {
+    padding: 10px 22px;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: .3s ease;
+}
+
+.login-btn {
+    color: #075985;
+    border: 1px solid #0ea5e9;
+    background-color: transparent;
+}
+
+.login-btn:hover {
+    color: #ffffff;
+    background-color: #0ea5e9;
+}
+
+.register-btn {
+    color: #ffffff;
+    background-color: #0369a1;
+    border-color: #0369a1;
+}
+
+/* navbar */
+.navbar {
+    width: 100%;
+    background-color: #075985;
+    padding: 0 7%;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.navbar ul li a {
+    display: block;
+    padding: 15px 20px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+    transition: .3s ease;
+}
+
+.navbar ul li a:hover,
+.navbar ul li a.active {
+    background-color: #0ea5e9;
+}
