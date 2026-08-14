@@ -15,6 +15,13 @@ exports.chatwithAI = async (req, res) => {
             });
         }
 
+        if (!client) {
+            return res.status(503).json({
+                success: false,
+                reply: "AI service is currently not confirgured."
+            });
+        }
+        
         const completion =  await client.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [

@@ -1,16 +1,28 @@
-require("dotenv").config({
-    path: "./OpenAi.env"
-});
+require("dotenv").config();
+    // path: "./OpenAi.env"
 
 const express = require("express");
 const path =  require("path");
 const cors = require("cors");
 
-
 const OpenAI = require("openai");
-const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-});
+
+let client = null;
+if (process.env.OPENAI_API_KEY &&
+    !process.env.OPENAI_API_KEY.startsWith("Your_")) {
+
+    const client = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY
+    });
+
+    console.log("OpenAI confirgured successfully.");
+} else {
+    console.log("OpenAI API key not confirgured. AI feature is disabled.");
+}
+
+const mongoose = require("mongoose");
+const connectDB =  require("./config/db");
+connectDB();
 
 
 const app = express();

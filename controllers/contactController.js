@@ -1,27 +1,59 @@
+const ContactMessage = require("../models/contactMessage");
+
+// display contact page
 exports.getContact = (req, res) => {
     res.render("contact", {
         title: "Contact Us"
     });
 };
 
+// save contact message
 exports.postContact = async (req, res) => {
     try {
         const {
             name,
             email,
             phone,
+            service,
             message
         } = req.body;
 
-        console.log({
+        // basic validation
+        if(!name || !email || !phone || !message) {
+            return res.status(400).json({
+                success: false,
+                message: "Please fill in all required fields."
+            });
+        }
+
+        // save message to mongo
+        const newMessage = await ContactMessage.create({
             name,
             email,
             phone,
+            service,
             message
         });
 
+        console.log(
+            "Contact message saved: ",
+            newMessage._id
+        );
+
+        return res.status(201).json({
+            success: true,
+            message: "Your message has been sent successfully!"
+        });
+
     } catch (err) {
-        console.error(err);
-        res.status(500).send("Internal Server Error");
+        console.error(
+            "Contact from error: ",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: "Unable to send your message. Please try again later."
+        });
     }
 };
