@@ -42,12 +42,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-
-//routes
-app.get("/", (req, res) => {
-    res.render("main");
-});
-
 const mainRoutes = require("./routes/mainRoutes");
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
@@ -71,67 +65,37 @@ app.use("/", contactRoutes);
 
 
 
-app.post("/api/chat", async(req, res) => {
-    try {
-        const { message } = req.body;
+// app.post("/api/chat", async(req, res) => {
+//     try {
+//         const { message } = req.body;
 
-        const completion = await client.chat.completions.create({
-            model: "gpt-4.1-mini",
-            messages: [
-                {
-                    role: "system",
-                    content: "You are an expert AI assistent for Shanti Enterprises, an RO water purifier business. Answer only question related to RO purifiers, water purifiers, water filters, installation, AMC, repair, maintenance and customer support. Be friendly and professional."
-                },
+//         const completion = await client.chat.completions.create({
+//             model: "gpt-4.1-mini",
+//             messages: [
+//                 {
+//                     role: "system",
+//                     content: "You are an expert AI assistent for Shanti Enterprises, an RO water purifier business. Answer only question related to RO purifiers, water purifiers, water filters, installation, AMC, repair, maintenance and customer support. Be friendly and professional."
+//                 },
 
-                {
-                    role: "user",
-                    content: message
-                }
-            ]
-        });
+//                 {
+//                     role: "user",
+//                     content: message
+//                 }
+//             ]
+//         });
 
-        res.json({
-            reply: completion.choices[0].message.content
-        });
+//         res.json({
+//             reply: completion.choices[0].message.content
+//         });
 
-    } catch (err) {
-        console.error(err);
+//     } catch (err) {
+//         console.error(err);
 
-        res.status(500).json({
-            reply: err.message
-        });
-    }
-});
-
-
-
-app.get("/navbar", (req, res) => {
-    res.render("partials/navbar");
-});
-
-app.get("/contact", (req, res) => {
-    res.render("contact");
-});
-
-app.post("/contact", (req, res) => {
-    const {
-        name,
-        phone,
-        email,
-        service,
-        message
-    } = req.body;
-
-    console.log({
-        name,
-        phone,
-        email,
-        service,
-        message
-    });
-
-    res.send("Thank you! Your message has been sent successfully.");
-});
+//         res.status(500).json({
+//             reply: err.message
+//         });
+//     }
+// });
 
 
 

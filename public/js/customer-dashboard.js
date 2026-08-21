@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     //dashboard cards animation
-
     const cards = document.querySelectorAll(".card");
 
     cards.forEach((card) => {

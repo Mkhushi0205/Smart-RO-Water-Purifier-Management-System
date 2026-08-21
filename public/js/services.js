@@ -3,7 +3,7 @@ const serviceForm = document.getElementById("serviceForm");
 
 // book-service
 if (serviceForm) {
-    serviceForm.addEventListener("submit", function (event) {
+    serviceForm.addEventListener("submit", async function (event) {
 
         event.preventDefault();
 
@@ -13,7 +13,7 @@ if (serviceForm) {
 
         const serviceType = document.getElementById("serviceType").value.trim();
 
-        const serviceDate = document.getElementById("serviceDate").value.trim();
+        const preferredDate = document.getElementById("preferredDate").value.trim();
 
         const address = document.getElementById("address").value.trim();
 
@@ -21,9 +21,11 @@ if (serviceForm) {
         // validation
         if (
             customerName === "" ||
+            email === "" ||
             phone === "" ||
             serviceType === "" ||
-            serviceDate === "" ||
+            problemDescription === "" ||
+            preferredDate === "" ||
             address === "" 
         ) {
             alert("Please fill in all the required fields.");
@@ -31,7 +33,7 @@ if (serviceForm) {
         }
 
         // check phone number
-        if (!/^[0-9]{10}4/.test(phone)) {
+        if (!/^[0-9]{10}$/.test(phone)) {
             alert("Please enter a valid 10-digit phone number.");
             return;
         }
@@ -41,21 +43,29 @@ if (serviceForm) {
             customerName: customerName,
             phone: phone,
             serviceType: serviceType,
-            serviceDate: serviceDate,
+            preferredDate: preferredDate,
             address: address,
             status: "Pending",
             createdAt: new Date().toLocaleString()
         };
 
         // save service request
-        let services = JSON.parse(localStorage.getItem("serviceRequests")) || [];
+        const response  = await fetch("/book-service", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(serviceData)
+        });
+        
+        // let services = JSON.parse(localStorage.getItem("serviceRequests")) || [];
 
-        services.push(serviceData);
+        // services.push(serviceData);
 
-        localStorage.setItem(
-            "serviceRequests",
-            JSON.stringify(services)
-        );
+        // localStorage.setItem(
+        //     "serviceRequests",
+        //     JSON.stringify(services)
+        // );
 
         // success message
         alert("Service booked successfully! Your service request is pending.");

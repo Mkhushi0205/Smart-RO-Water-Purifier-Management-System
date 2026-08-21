@@ -1,5 +1,4 @@
 const ServiceBooking = require("../models/serviceBooking");
-const serviceBooking = require("../models/serviceBooking");
 
 // get Services page
 exports.getServices = async (req, res) => {

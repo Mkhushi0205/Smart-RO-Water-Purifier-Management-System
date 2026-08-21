@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (logout) {
                 alert("Logged out successfully!");
-                window.location.href = "index.html";
+                window.location.href = "/logout";
             }
         });
     }
@@ -112,10 +112,10 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     //current date
-    const curretDate = document.getElementById("currentDate");
+    const currentDate = document.getElementById("currentDate");
 
     if (currentDate) {
         const today = new Date();
-        currentDate.innerHTML = today.toDateString();
+        currentDate.textContent = today.toDateString();
     }
 });

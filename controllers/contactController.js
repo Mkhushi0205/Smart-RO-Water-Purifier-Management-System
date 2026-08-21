@@ -19,7 +19,7 @@ exports.postContact = async (req, res) => {
         } = req.body;
 
         // basic validation
-        if(!name || !email || !phone || !message) {
+        if(!/^[0-9]{10}$/.test(phone)) {
             return res.status(400).json({
                 success: false,
                 message: "Please fill in all required fields."
@@ -45,7 +45,7 @@ exports.postContact = async (req, res) => {
             message: "Your message has been sent successfully!"
         });
 
-    } catch (err) {
+    } catch (error) {
         console.error(
             "Contact from error: ",
             error

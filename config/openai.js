@@ -11,7 +11,10 @@ if (
     const client = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY
     });  
-}
 
+    console.log("OpenAI configured successfully.");
+} else {
+    console.log("OpenAI API key not configured. AI feature is disabled.");
+}
 
 module.exports = client;
