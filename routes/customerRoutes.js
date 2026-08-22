@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-const dashboardController = 
-    require("../controllers/customer-dashboardController");
+const customerController = require("../controllers/customer-dashboardController");
+const { requireRole } = require("../middleware/auth");
 
 router.get(
-    "/customer-dashboard", 
-    dashboardController.getDashboard
+    "/customer-dashboard",
+    requireRole("customer"),
+    customerController.getCustomerDashboard
 );
 
 module.exports = router;

@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+
 const connectDB = require("../config/db");
 
 const User = require("../models/User");
@@ -29,7 +30,7 @@ const seedDatabase = async() => {
             },
 
             {
-                fullName: "Raj Kumar",
+                fullName: "Technician User",
                 email: "technician@shantienterprises.com",
                 phone: "9876543211",
                 password: "Password123",
@@ -87,16 +88,17 @@ const seedDatabase = async() => {
         console.log("-----------------------------------");
 
         console.log("\nDemo Login Details:");
+
         console.log("Admin:");
-        console.log("Email: admin@shantiEnterprises.com");
+        console.log("Email: admin@shantienterprises.com");
         console.log("Password: Password123");
 
         console.log("\nTechnician:");
-        console.log("Email: technician@shantiEnterprises.com");
+        console.log("Email: technician@shantienterprises.com");
         console.log("Password: Password123");
 
-        console.log("\nDemo Login Details:");
-        console.log("Email: customer@shantiEnterprises.com");
+        console.log("\nCustomer:");
+        console.log("Email: customer@shantienterprises.com");
         console.log("Password: Password123");
 
         process.exit(0);

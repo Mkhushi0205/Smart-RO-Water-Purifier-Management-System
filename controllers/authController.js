@@ -51,6 +51,9 @@ exports.postLogin = async (req, res) => {
             `Login successful: ${user.email}`
         );
 
+        //save logged-in user's ID in the session
+        req.session.userId = user._id.toString();
+
         // Redirect according to role
         if (user.role === "admin") {
             return res.redirect("/admin-dashboard");
@@ -200,5 +203,12 @@ exports.postRegister = async (req, res) => {
 // LOGOUT
 
 exports.logout = (req, res) => {
-    res.redirect("/");
+    res.session.destroy((err) => {
+        if(err) {
+            console.error("Logout Error:", err);
+            return res.status(500).send("Unable to logout.");
+        }
+        res.clearCookie("connect.sid");
+        res.redirect("/"); 
+    });
 };

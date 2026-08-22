@@ -8,36 +8,13 @@
     <link rel="stylesheet" href="/css/admin-dashboard.css"/>
 </head>
 <body>
-    <header class="dashboard-header">
-        <div class="logo">
-                <img src="/images/logo/logo.png" alt="image">
+    <!-- header, navigation -->
+    <%- include("partials/navbar") %>
 
-            <div class="logo-text">
-                <h2>M/S Shanti Enterprises</h2>
-                <p>Professional RO Installation, Repair & Annual Maintenance.</p>
-            </div>
-        </div>
-
-        <a href="/" class="logout-btn">Logout</a>
-    </header>
-
-    <div class="dashboard">
-        <aside class="sidebar">
-              <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Customer</a></li>
-                <li><a href="#">Product</a></li>
-                <li><a href="#">Booking</a></li>
-                <li><a href="#">Technicians</a></li>
-                <li><a href="#">Payments</a></li>
-                <li><a href="#">Reports</a></li>
-                <li><a href="#">Settings</a></li>
-              </ul>
-        </aside>
 
         <main class="main-content">
             <section class="welcome">
-                <h1>Welcome, Admin 👋</h1>
+                <h1>Welcome, <%= user.fullName %> 👋</h1>
                 <p id="currentDate">Manage your business from one place</p>
             </section>
 
