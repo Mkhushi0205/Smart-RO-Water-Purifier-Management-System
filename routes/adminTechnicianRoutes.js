@@ -19,7 +19,7 @@ router.get(
 router.get(
     "/admin/technicians/add",
     requireRole("admin"),
-    adminTechnicianController.getTechnicians
+    adminTechnicianController.getAddTechnician
 );
 
 // create technician

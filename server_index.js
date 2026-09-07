@@ -59,7 +59,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
     secret: process.env.SESSION_SECRET || "smart-ro-secret",
-    reserve: false,
+    resave: false,
     saveUninitialized: false,
     cookie: {
         secure: false,
