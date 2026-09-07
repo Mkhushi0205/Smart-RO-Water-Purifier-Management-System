@@ -18,9 +18,14 @@ connectDB();
 // routes
 const mainRoutes = require("./routes/mainRoutes");
 const authRoutes = require("./routes/authRoutes");
+
 const adminRoutes = require("./routes/adminRoutes");
 const customerRoutes = require("./routes/customerRoutes");
 const technicianRoutes = require("./routes/technicianRoutes");
+const adminTechnicianRoutes = require(
+    "./routes/adminTechnicianRoutes"
+);
+
 const AI_featureRoutes = require("./routes/AI_featureRoutes");
 const productsRoutes = require("./routes/productsRoutes");
 const serviceRoutes = require("./routes/serviceRoutes");
@@ -77,9 +82,12 @@ app.use(express.static(path.join(__dirname, "public")));
 // routes
 app.use("/", mainRoutes);
 app.use("/", authRoutes);
+
 app.use("/", adminRoutes);
 app.use("/", customerRoutes);
 app.use("/", technicianRoutes);
+app.use("/", adminTechnicianRoutes);
+
 app.use("/", AI_featureRoutes);
 app.use("/", productsRoutes);
 app.use("/", serviceRoutes);

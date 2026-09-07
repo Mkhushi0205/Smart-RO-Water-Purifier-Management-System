@@ -7,7 +7,7 @@ exports.getAdminDashboard = async (req, res) => {
 
     try {
         const dashboardData = {
-            adminName: "Admin",
+            adminName: req.user.fullName,
             
             statistics: {
                 totalCustomers: 245,

@@ -203,11 +203,15 @@ exports.postRegister = async (req, res) => {
 // LOGOUT
 
 exports.logout = (req, res) => {
-    res.session.destroy((err) => {
+
+    req.session.destroy((err) => {
+
         if(err) {
+            
             console.error("Logout Error:", err);
             return res.status(500).send("Unable to logout.");
         }
+
         res.clearCookie("connect.sid");
         res.redirect("/"); 
     });

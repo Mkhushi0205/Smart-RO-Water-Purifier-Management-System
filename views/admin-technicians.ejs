@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Technicians</title>
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+</head>
+<body>
+    <header class="dashboard-header">
+
+        <div class="logo">
+            <a href="/">
+                <img src="/images/logo/logo.png" alt="M/S Shanti Enterprises">
+            </a>
+
+            <div class="logo-text">
+                <h2>M/S Shanti Enterprises</h2>
+                <p>
+                    Professional RO Installation, Repair & Annual Maintenance.
+                </p>
+            </div>
+        </div>
+
+        <a href="/logout" cclass="logout-btn">
+            Logout
+        </a>
+    </header>
+
+    <div class="dashboard">
+
+        <aside class="sidebar">
+            <ul>
+                <li>
+                    <a href="/admin-dashboard">Dashboard</a>
+                </li>
+
+                <li>
+                    <a href="/admin/technician">Technicians</a>
+                </li>
+
+                <li>
+                    <a href="#">Customers</a>
+                </li>
+
+                <li>
+                    <a href="#">Products</a>
+                </li>
+
+                <li>
+                    <a href="#">Bookings</a>
+                </li>
+
+                <li>
+                    <a href="#">Payments</a>
+                </li>
+
+                <li>
+                    <a href="#">Reports</a>
+                </li>
+            </ul>
+        </aside>
+         
+        <main class="main-content">
+
+            <section class="welcome">
+                <h1>Manage Technicians 👨‍🔧</h1>
+                <p>
+                    Add and manage technicians for your RO service business.
+                </p>
+            </section>
+
+            <section class="actions">
+
+                <div class="action-container">
+
+                    <div class="action-card">
+                        <h3>Add New Technician</h3>
+                        <a href="/admin/technicians/add">
+                            + Add Technician
+                        </a>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="action-content">
+
+                <h2>Registered Technicians</h2>
+
+                <% if (technicians.length === 0) { %>
+
+                    <p>No technicians registered yet.</p>
+
+                <% } else { %>
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Name
+                                </th>
+
+                                <th>
+                                    Email
+                                </th>
+
+                                <th>
+                                    Phone
+                                </th>
+
+                                <th>
+                                    Role
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <% technicians.forEach(technician => { %>
+
+                                <tr>
+
+                                    <td>
+                                        <%= technician.fullName %>
+                                    </td>
+
+                                    <td>
+                                        <%= technician.email %>
+                                    </td>
+
+                                    <td>
+                                        <%= technician.phone %>
+                                    </td>
+
+                                    <td>
+                                        <%= technician.role %>
+                                    </td>
+
+                                </tr>
+
+                            <% }) %>
+
+                        </tbody>
+
+                    </table>
+
+                <% } %>
+
+            </section>
+            
+        </main>
+        
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M/S Shanti Enterprises</title>
+    <link rel="stylesheet" href="/css/error.css">
+</head>
+<body>
+    <div class="error-container">
+
+        <div class="error-card">
+
+            <div class="error-icon">
+                ⚠️
+            </div>
+
+            <h1>Access Denied</h1>
+            <p>
+                <%= message || "You are not authorized to access this page." %>
+            </p>
+
+            <div class="error-buttons">
+                <a href="/" class="btn home-btn">
+                    Go to Home
+                </a>
+
+                <a href="/login" class="bttn login-btn">Login Again</a>
+            </div>
+
+        </div>
+
+    </div>
+    
+</body>
+</html>

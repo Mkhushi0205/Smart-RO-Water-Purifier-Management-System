@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Technician</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body class="auth-page">
+
+    <div class="login-box">
+
+        <h2>Add Technician</h2>
+
+        <form action="/admin/technicians/add" method="post">
+
+            <input 
+                type="text"
+                name="fullName"
+                minlength="3"
+                maxlength="50"
+                pattern="[A-Za-z ]+"
+                placeholder="Full Name" required>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Email" required>
+            
+            <input
+                type="tel"
+                name="phone"
+                maxlength="10"
+                pattern="[0-9]{10}"
+                placeholder="Mobile Number" required>
+
+            <input
+                type="password"
+                name="password"
+                minlength="8"
+                maxlength="20"
+                placeholder="Password" required>
+
+            <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm password" required>
+
+            <button type="submit">
+                Create Technician
+            </button>
+
+        </form>
+
+        <p class="register-link">
+            <a href="/admin/technician">
+                ← Back to Technicians
+            </a>
+        </p>
+
+        <p class="home-link">
+            <a href="/admin-dashboard">
+                Back to Dashboard
+            </a>
+        </p>
+
+    </div>
+
+</body>
+</html>

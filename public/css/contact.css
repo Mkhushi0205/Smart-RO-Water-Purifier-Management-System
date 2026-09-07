@@ -10,10 +10,18 @@ html {
     scroll-behavior: smooth;
 }
 
+main {
+    flex: 1;
+}
+
 body {
     background: #eef5fb;
     color: #333;
     min-height: 100vh;
+}
+
+footer {
+    margin-top: auto;
 }
 
 /* header */
@@ -62,7 +70,7 @@ body {
 }
 
 .hero-content p {
-    font-size: 18px;
+    font-size: 19px;
     line-height: 1.7;
     color: #ffffff;
 }
@@ -75,6 +83,7 @@ body {
 
 .contact-container {
     max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1.2fr;
@@ -99,7 +108,7 @@ body {
 .contact-info p {
     color: #666;
     line-height: 1.7;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 /* information box */
@@ -137,6 +146,7 @@ body {
     color: #666;
     font-size: 15px;
     line-height: 1.6;
+    margin-bottom: 0;
 }
 
 /* contact form */
@@ -219,6 +229,13 @@ body {
     box-shadow: 0 5px 15px rgba(0, 95, 135, .25);
 }
 
+/* form-message */
+.form-message {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+}
+
 /* footer */
 .contact-footer {
     width: 100%;
@@ -226,11 +243,12 @@ body {
     color: #ffffff;
     text-align: center;
     padding: 25px 20px;
-    margin-top: 20px;
+    margin-top: 0;
 }
 
 .contact-footer p {
     font-size: 14px;
+    margin: 0;
 }
 
 /* tablet responsive */
