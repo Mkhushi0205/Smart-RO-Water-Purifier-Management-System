@@ -66,7 +66,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false,
+        secure: process.env.NODE_ENV === "production",
         maxAge: 1000 * 60 * 60 * 24
     }
 }));
@@ -103,11 +103,19 @@ app.use("/", technicianJobRoutes);
 
 
 //server
-app.listen(port, () => {
-    console.log(`server running on http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//     console.log(`server running on http://localhost:${port}`);
+// });
 
+if (require.main === module) {
+    const port = process.env.PORT || 3000;
 
+    app.listen(port, () => {
+        console.log(`server running on http://localhost:${port}`);
+    });
+}
+
+module.exports = app;
 
 
 
