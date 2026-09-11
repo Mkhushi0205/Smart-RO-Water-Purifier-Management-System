@@ -1,10 +1,22 @@
 const express = require("express");
 const router = express.Router();
 
-const serviceController = require("../controllers/serviceController");
+const serviceController = 
+    require("../controllers/serviceController");
 
-router.get("/services", serviceController.getServices);
+const {
+    requireRole
+} = require("../middleware/auth");
 
-router.post("/book-service", serviceController.bookService);
+router.get(
+    "/services", 
+    serviceController.getServices
+);
+
+router.post(
+    "/book-service", 
+    requireRole("customer"),
+    serviceController.bookService
+);
 
 module.exports = router;

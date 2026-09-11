@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service History</title>
+    <link rel="stylesheet" href="/css/service-history.css">
+
+</head>
+<body>
+    
+    <main class="service-history-page">
+
+        <div class="service-history-container">
+
+            <!-- header -->
+
+            <div class="service-history-header">
+
+                <h1>My Service History</h1>
+
+                <a href="/customer-dashboard" class="back-btn">
+                    ← Back to Dashboard
+                </a>
+
+            </div>
+
+            <!-- no  bookings -->
+
+            <% if (!bookings || bookings.length === 0) { %>
+
+                <div class="empty-service">
+
+                    <div class="empty-service-icon">
+                        📋
+                    </div>
+
+                    <h3>No Service History</h3>
+
+                    <p>
+                        You haven't booked any service yet.
+                    </p>
+
+                    <a href="/services" class="book-service-btn">
+                        Book a Service
+                    </a>
+                </div>
+
+                <% } else { %>
+
+                    <!-- Service-list -->
+                    <div class="service-list">
+
+                        <% bookings.forEach(booking => { %>
+
+                            <div class="service-card">
+
+                                <!-- card header -->
+                                <div class="service-card-header">
+
+                                    <h2>
+                                        <%= booking.serviceType || "Service" %>
+                                    </h2>
+
+                                    <span 
+                                        class="status-badge <%= (booking.status || '').toLowerCase() %>"
+                                    >
+                                        <%= booking.status || "Pending" %>
+                                    </span>
+                                </div>
+
+                                <!-- details -->
+                                <div class="service-details">
+
+                                    <div class="detail-item">
+
+                                        <span class="detail-label">
+                                            Problem
+                                        </span>
+
+                                        <span class="detail-value">
+                                            <%= booking.problemDescription || "Not provided" %>
+                                        </span>
+
+                                    </div>
+
+                                    <div class="detail-item">
+
+                                        <span class="detail-label">
+                                            Preferred Date
+                                        </span>
+
+                                        <span>
+                                            <%= booking.preferredDate
+                                                ? new Date(
+                                                    booking.preferredDate
+                                                ).toLocaleDateString()
+                                                : "Not provided" 
+                                            %>
+                                        </span>
+
+                                    </div>
+
+                                    <div class="detail-item">
+
+                                        <span class="detail-label">
+                                            Technician
+                                        </span>
+
+                                        <span class="detail-value">
+                                            <% if (booking.technician) { %>
+
+                                                <%= booking.technician.fullName %>
+
+                                            <% } else { %>
+                                                Not assigned yet
+                                            <% } %>
+
+                                        </span>
+
+                                    </div>
+
+                                    <div class="detail-item">
+
+                                        <span class="detail-label">
+                                            Technician Phone
+                                        </span>
+
+                                        <span class="detail-value">
+                                            <% if (
+                                                booking.technician &&
+                                                booking.technician.phone
+                                            ) { %>
+                                                <%= booking.technician.phone %>
+                                            <% } else { %>
+                                                Not available
+                                            <% } %>
+                                        </span>
+
+                                    </div>
+
+                                    <div class="detail-item">
+
+                                        <span class="detail-label">
+                                            Address
+                                        </span>
+
+                                        <span class="detail-value">
+                                            <%= booking.address || "Not provided" %>
+                                        </span>
+                                         
+                                    </div>
+
+                                    <div class="detail-item">
+
+                                        <span class="detail-label">
+                                            Booked On
+                                        </span>
+
+                                        <span class="detail-value">
+
+                                            <%= booking.createdAt
+                                                ? new Date(
+                                                    booking.createdAt
+                                                ).toLocaleDateString()
+                                                : "Not available"
+                                            %>
+                                        </span>
+                                          
+                                    </div>
+
+                                </div>
+
+
+                                // notes
+                                <% if (booking.notes) { %>
+
+                                    <div class="service-notes">
+
+                                        <strong>Service Notes</strong>
+                                        <p>
+                                            <%= booking.notes %>
+                                        </p>
+
+                                    </div>
+
+                                <% } %>
+
+                            </div>
+
+                        <% }) %>
+
+                    </div>
+            <% } %>
+
+        </div>
+
+    </main>
+    
+</body>
+</html>

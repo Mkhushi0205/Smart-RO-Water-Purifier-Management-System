@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technician Jobs</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #1d3557;
+        }
+
+        .job {
+            background: white;
+            padding: 22px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, .08);
+        }
+
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 18px;
+            background: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .empty {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>My Assigned Jobs</h1>
+
+        <% if (jobs.length === 0) { %>
+
+            <div class="empty">
+                <h3>No Jobs Assigned</h3>
+                <p>
+                    You currently don't have any assigned service jobs.
+                </p>
+            </div>
+
+        <% } %>
+
+        <% jobs.forEach(job => {
+            <div class="job">
+                <h2>
+                    <%= job.serviceType %>
+                </h2>
+                <p>
+                    <strong>Customer:</strong>
+                    <%= job.customerName %>
+                </p>
+
+                <p>
+                    <strong>Phone:</strong>
+                    <%= job.phone %>
+                </p>
+
+                <p>
+                    <strong>Email:</strong>
+                    <%= job.email %>
+                </p>
+
+                <p>
+                    <strong>Problem:</strong>
+                    <%= job.problemDescription %>
+                </p>
+
+                <p>
+                    <strong>Preferred Date:</strong>
+                    <%= new Date(
+                        job.preferredDate
+                    ).tolocaleDateString() %>
+                </p>
+
+                <p>
+                    <strong>Current Status:</strong>
+                    <%= job.status %>
+                </p>
+
+                <form action="/technician/jobs/<%= job._id %>/status" method="POST">
+
+                    <label>Update Status</label>
+
+                    <select name="status">
+
+                        <option value="Assigned" 
+                                <%= job.status === "Assigned"
+                                    ? "selected"
+                                    : "" %> 
+                        >
+                            Assigned
+                        </option>
+
+                        <option value="In Progress"
+                                <%= job.status === "In Progress"
+                                    ? "selected"
+                                    : "" %>
+                        >
+                            In Progress
+                        </option>
+
+                        <option value="Completed"
+                                <%= job.status === "Completed"
+                                    ? "selected"
+                                    : "" %>
+                        >
+                            Completed
+                        </option>
+                        
+                    </select>
+
+                    <label>
+                        Service Notes
+                    </label>
+
+                    <textarea 
+                        name="notes"
+                        rows="4"
+                        placeholder="Enter service work details...">
+                            <%= job.notes || "" %> </textarea>
+
+                    <button type="submit">
+                        Update Job
+                    </button>
+                    
+                </form>
+            </div>
+        <% }) %>
+
+    </div>
+    
+</body>
+</html>

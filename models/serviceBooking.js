@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 
 const serviceBookingSchema = new mongoose.Schema(
     {
+        // logged-in customer
+        customer: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+            index: true
+        },
+
         // customer information
         customerName: {
             type: String,
@@ -44,7 +52,8 @@ const serviceBookingSchema = new mongoose.Schema(
 
         city: {
             type: String,
-            trim: true
+            trim: true,
+            default: ""
         },
 
         pincode: {
@@ -77,7 +86,8 @@ const serviceBookingSchema = new mongoose.Schema(
         technician: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            default: null
+            default: null,
+            index: true
         },
 
         // additional notes

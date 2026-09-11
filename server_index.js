@@ -31,6 +31,10 @@ const productsRoutes = require("./routes/productsRoutes");
 const serviceRoutes = require("./routes/serviceRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
+const roMachineRoutes = require("./routes/roMachineRoutes");
+const serviceHistoryRoutes = require("./routes/serviceHistoryRoutes");
+const technicianJobRoutes = require("./routes/technicianJobRoutes")
+
 const OpenAI = require("openai");
 
 let client = null;
@@ -92,6 +96,10 @@ app.use("/", AI_featureRoutes);
 app.use("/", productsRoutes);
 app.use("/", serviceRoutes);
 app.use("/", contactRoutes);
+
+app.use("/", roMachineRoutes);
+app.use("/", serviceHistoryRoutes);
+app.use("/", technicianJobRoutes);
 
 
 //server

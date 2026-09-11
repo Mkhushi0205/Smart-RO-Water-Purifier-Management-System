@@ -25,10 +25,10 @@
         <div class="dashboard-nav">
             <aside class="sidebar">
                 <ul>
-                    <li><a href="#">Dashboard</a></li>
-                    <li><a href="#">My RO</a></li>
-                    <li><a href="#">Book Service</a></li>
-                    <li><a href="#">Service History</a></li>
+                    <li><a href="/customer-dashboard">Dashboard</a></li>
+                    <li><a href="/my-machines">My RO</a></li>
+                    <li><a href="/services">Book Service</a></li>
+                    <li><a href="/service-history">Service History</a></li>
                     <li><a href="#">Profile</a></li>
                 </ul>
             </aside>
@@ -72,8 +72,14 @@
                     <div class="action-card">
                         <div class="icon">📅</div>
                         <h3>Book Service</h3>
-                        <p>Schedule an RO service at your preferred date any time.</p>
-                        <button>Book Now</button>
+                        <p>
+                            Schedule a new RO service or request maintenance.
+                        </p>
+                        <a 
+                            href="/service-history"
+                            class="action-btn">
+                            Book Now
+                        </a>
                     </div>
 
                     <div class="action-card">

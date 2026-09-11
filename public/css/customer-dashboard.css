@@ -224,18 +224,32 @@ body {
     margin-bottom: 20px;
 }
 
-.action-card button {
-    background: #0077b6;
-    color: #ffffff;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: .3s ease;
+.back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 18px;
+    background: #1976d2;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
 }
 
-.action-card button:hover {
-    background: #005f87;
+.back-btn:hover {
+    background: #125ca1;
+}
+
+.action-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #1976d2;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.action-btn:hover {
+    background: #125ca1;
 }
 
 @media(max-width: 992px) {

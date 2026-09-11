@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     menuitems.forEach(item => {
         item.addEventListener("click", function () {
             menuitems.forEach(link => link.classList.remove("active"));
-            this.classList.add(" active ");
+            this.classList.add("active");
         });
 
     });

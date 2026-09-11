@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> My RO Machines </title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #1d3557;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, .08);
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-btn {
+            background: #1976d2;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .machine {
+            border-left: 5px solid #1976d2;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>My RO Machine</h1>
+
+        <div class="card">
+
+            <h2>Add New RO Machine</h2>
+
+            <form action="/my-machines/add" method="POST">
+
+                <label>Machine Name</label>
+                <input type="text" name="machineName" placeholder="Example: Kent RO" required>
+
+                <label>Model Number</label>
+                <input type="text" name="modelNumber" placeholder="Example: KENT-RO-2025">
+
+                <label>Serial Number</label>
+                <input type="text" name="serialNumber" required>
+
+                <label>Purchase Date</label>
+                <input type="date" name="puchaseDate">
+
+                <label>Installation Date</label>
+                <input type="date" name="installationDate">
+
+                <label>Address</label>
+                <textarea name="address" required></textarea>
+
+                <label>Notes</label>
+                <textarea name="notes" placeholder="Additional information"></textarea>
+
+                <button type="submit" class="add-btn">
+                    Add Machine
+                </button>
+            </form>
+
+        </div>
+
+        <h2>Your Machines</h2>
+        <% if (machines.length === 0) { %>
+            
+            <div class="card">
+                <p>
+                    You haven't added any RO machines yet.
+                </p>
+            </div>
+        <% } %>
+
+        <% machines.forEach(machine => { %>
+            <div class="card machine">
+                <h2>
+                    <%= machine.machineName %>
+                </h2>
+
+                <p>
+                    <strong>Model:</strong>
+                    <%= machine.modelName || "Not provided" %>
+                </p>
+
+                <p>
+                    <strong>Serial Number:</strong>
+                    <%= machine.serialNumber %>
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    <span class="status">
+                        <%= machine.status %>
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Address:</strong>
+                    <%= machine.address %>
+                </p>
+
+                <% if (machine.purchaseDate) { %>
+
+                    <p>
+                        <strong>Purchase Date:</strong>
+                        <%= new Date (
+                            machine.purchaseDate
+                        ).toLocalDateString() %>
+                    </p>
+                <% } %>
+
+                <form action="/my-machines/<%= machine._id %>/delete" metho="POST" onsubmit="return confirm('Delete this machine?')">
+
+                    <button type="submit" class="delete-btn">
+                        Delete Machine
+                    </button>
+
+                </form>
+            </div>
+        <% }) %>
+    </div>
+    
+</body>
+</html>

@@ -56,6 +56,8 @@ exports.bookService = async (req, res) => {
 
         // create booking
         const booking = await ServiceBooking.create({
+            customer: req.user._id,
+            
             customerName: customer.trim(),
             email: email.trim().toLowerCase(),
             phone: phone.trim(),
