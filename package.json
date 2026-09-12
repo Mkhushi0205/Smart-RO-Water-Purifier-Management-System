@@ -2,7 +2,7 @@
   "name": "ro",
   "version": "1.0.0",
   "description": "A full-stack web application designed to modernize the management of an RO water purifier business. This project is being developed for **S/O Shanti Enterprises** to simplify customer service, technician management, product management, and business operations through a single digital platform.",
-  "main": "server_index.js",
+  "main": "index.js",
   "scripts": {
     "start": "node server_index.js",
     "dev": "nodemon server_index.js",
