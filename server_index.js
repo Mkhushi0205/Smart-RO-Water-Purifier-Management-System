@@ -13,7 +13,9 @@ const mongoose = require("mongoose");
 const { loadUser, requireRole } = require("./middleware/auth");
 
 const connectDB =  require("./config/db");
-connectDB();
+connectDB().catch((err) => {
+    console.error("MongoDB connection error:", err.message);
+});
 
 // routes
 const mainRoutes = require("./routes/mainRoutes");
