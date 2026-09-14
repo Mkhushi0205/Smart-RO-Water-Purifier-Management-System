@@ -1,7 +1,10 @@
 const Product = require("../models/Product");
+const connectDB = require("../config/db");
 
 exports.getProducts = async (req, res) => {
     try {
+        await connectDB();
+        
         const products = await Product.find();
 
         res.render("products", {
