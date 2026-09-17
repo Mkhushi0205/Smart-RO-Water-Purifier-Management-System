@@ -11,11 +11,20 @@ const session =  require("express-session");
 const mongoose = require("mongoose");
 
 const { loadUser, requireRole } = require("./middleware/auth");
+const MongoStore = require("connect-mongo");
 
 const connectDB =  require("./config/db");
-connectDB().catch((err) => {
-    console.error("MongoDB connection error:", err.message);
+
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        console.error("DB connection error:", err.message);
+        res.status(500).send("Database connection failed. Please try again shortly.");
+    }
 });
+
 
 // routes
 const mainRoutes = require("./routes/mainRoutes");
@@ -67,6 +76,10 @@ app.use(session({
     secret: process.env.SESSION_SECRET || "smart-ro-secret",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URI,
+        collectionName: "sessions"
+    }),
     cookie: {
         secure: process.env.NODE_ENV === "production",
         maxAge: 1000 * 60 * 60 * 24
