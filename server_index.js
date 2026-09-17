@@ -1,20 +1,32 @@
 require("dotenv").config();
     // path: "./OpenAi.env"
 
-
 const express = require("express");
 const app = express();
 
 const path =  require("path");
 const cors = require("cors");
 const session =  require("express-session");
+const MongoStore = require("connect-mongo");
+
 const mongoose = require("mongoose");
 
 const { loadUser, requireRole } = require("./middleware/auth");
-const MongoStore = require("connect-mongo");
-
 const connectDB =  require("./config/db");
 
+
+//view engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+//static files
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use(cors());
+// basic middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// connect to db before any route that needs it, but fail with a clear message instead of crashing the whole app
 app.use(async (req, res, next) => {
     try {
         await connectDB();
@@ -24,6 +36,31 @@ app.use(async (req, res, next) => {
         res.status(500).send("Database connection failed. Please try again shortly.");
     }
 });
+
+
+// session store - wrapped so a bad mongo uri doesn't crash app startup
+let sessionStore;
+try {
+    sessionStore = MongoStore.create({
+        mongoUrl: process.env.MONGO_URI,
+        collectionName: "sessions",
+        ttl: 60 * 60 * 24
+    });
+} catch (err) {
+    console.error("Session store init failed, falling back to memoryStore:", err.message);
+    sessionStore = undefined;
+}
+
+app.use(session({
+    secret: process.env.SESSION_SECRET || "smart-ro-secret",
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+    cookie: {
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 1000 * 60 * 60 * 24
+    }
+}));
 
 
 // routes
@@ -56,46 +93,13 @@ if (process.env.OPENAI_API_KEY &&
         apiKey: process.env.OPENAI_API_KEY
     });
 
-    console.log("OpenAI confirgured successfully.");
+    console.log("OpenAI configured successfully.");
 } else {
-    console.log("OpenAI API key not confirgured. AI feature is disabled.");
+    console.log("OpenAI API key not configured. AI feature is disabled.");
 }
-
-
-const port = 3000;
-
-
-app.use(cors());
-
-
-// basic middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.use(session({
-    secret: process.env.SESSION_SECRET || "smart-ro-secret",
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URI,
-        collectionName: "sessions"
-    }),
-    cookie: {
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 1000 * 60 * 60 * 24
-    }
-}));
 
 // load logged-in user
 app.use(loadUser);
-
-
-//view engine
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-
-//static files
-app.use(express.static(path.join(__dirname, "public")));
 
 
 // routes
@@ -117,11 +121,6 @@ app.use("/", serviceHistoryRoutes);
 app.use("/", technicianJobRoutes);
 
 
-//server
-// app.listen(port, () => {
-//     console.log(`server running on http://localhost:${port}`);
-// });
-
 if (require.main === module) {
     const port = process.env.PORT || 3000;
 
@@ -131,6 +130,16 @@ if (require.main === module) {
 }
 
 module.exports = app;
+
+
+
+// const port = 3000;
+//server
+// app.listen(port, () => {
+//     console.log(`server running on http://localhost:${port}`);
+// });
+
+
 
 
 
