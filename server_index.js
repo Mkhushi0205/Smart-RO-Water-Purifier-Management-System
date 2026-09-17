@@ -9,6 +9,8 @@ const cors = require("cors");
 const session =  require("express-session");
 const MongoStore = require("connect-mongo");
 
+app.set("trust proxy", 1);
+
 const mongoose = require("mongoose");
 
 const { loadUser, requireRole } = require("./middleware/auth");
