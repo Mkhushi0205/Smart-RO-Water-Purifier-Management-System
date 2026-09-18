@@ -54,6 +54,10 @@ exports.postLogin = async (req, res) => {
         //save logged-in user's ID in the session
         req.session.userId = user._id.toString();
 
+        // password verification ke baad
+        console.log("LOGIN ROLE:", user.role);
+        console.log("LOGIN ROLE:", user.email);
+
         // Redirect according to role
         if (user.role === "admin") {
             return res.redirect("/admin-dashboard");
