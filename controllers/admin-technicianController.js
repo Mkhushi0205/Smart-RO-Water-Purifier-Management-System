@@ -108,7 +108,7 @@ exports.postAddTechnician = async (req, res) => {
 
         console.log("Technician created:", technician.email);
 
-        return res.redirect("/admin/technician");
+        return res.redirect("/admin/technicians");
 
     } catch(error) {
         console.error("Add Technician Error:", error);

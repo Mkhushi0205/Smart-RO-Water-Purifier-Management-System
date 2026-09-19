@@ -57,9 +57,13 @@ app.use(session({
     secret: process.env.SESSION_SECRET || "smart-ro-secret",
     resave: false,
     saveUninitialized: false,
+
     store: sessionStore,
+
     cookie: {
+        httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
         maxAge: 1000 * 60 * 60 * 24
     }
 }));

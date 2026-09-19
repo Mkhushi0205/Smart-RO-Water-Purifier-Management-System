@@ -4,7 +4,8 @@ const User  = require("../models/User");
 const loadUser = async (req, res, next) => {
 
     try {
-         res.locals.user = null;
+        res.locals.user = null;
+        req.user = null;
 
         // no logged-in user
         if (!req.session || !req.session.userId) {
@@ -18,14 +19,24 @@ const loadUser = async (req, res, next) => {
             return next();
         }
 
+        // normalize role
+        user.role = String(user.role || "")
+            .trim()
+            .toLowerCase();
+
         req.user = user;
         res.locals.user = user;
 
+        console.log(
+            "LOAD USER :", user.email,
+            "ROLE :", JSON.stringify(user.role)
+        );
         next();
 
     } catch (error) {
         console.error("Error loading user:", error);
         res.locals.user = null;
+        req.user = null;
         next();
     }
 };
@@ -49,9 +60,30 @@ const requireRole = (role) => {
             return res.redirect("/login");
         }
 
-        if (req.user.role !== role) {
+        const actualRole = String(req.user.role || "")
+            .trim()
+            .toLowerCase();
+
+        const expectedRole = String(requiredRole)
+            .trim()
+            .toLowerCase();
+
+        console.log(
+            "ROLE CHECK :", req.user.email,
+            "EXPECTED :", exectedRole,
+            "ACTUAL :", actualRole
+        );
+
+        if (actualRole !== expectedRole) {
+            console.log(
+                "ACCESS DENIED :", req.user.email,
+                "Eexpected :", expectedRole,
+                "ActualRole :", actualRole
+            );
+
             return res.status(403).render("error", {
-                message: "Access denied."
+                title: "Access Denied",
+                message: "Yor do not have permission to access this page."
             });
         }
 
@@ -61,5 +93,6 @@ const requireRole = (role) => {
 
 module.exports = {
     loadUser,
+    requireAuth,
     requireRole
 };
