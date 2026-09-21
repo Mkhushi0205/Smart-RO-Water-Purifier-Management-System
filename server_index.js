@@ -1,140 +1,279 @@
 require("dotenv").config();
-    // path: "./OpenAi.env"
 
 const express = require("express");
-const app = express();
-
-const path =  require("path");
+const path = require("path");
 const cors = require("cors");
-const session =  require("express-session");
+const session = require("express-session");
 const { MongoStore } = require("connect-mongo");
-
-app.set("trust proxy", 1);
-
 const mongoose = require("mongoose");
 
-const { loadUser, requireRole } = require("./middleware/auth");
-const connectDB =  require("./config/db");
+const connectDB = require("./config/db");
+const { loadUser } = require("./middleware/auth");
+
+const app = express();
 
 
-//view engine
+// BASIC APP CONFIGURATION
+app.set("trust proxy", 1);
+
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-//static files
-app.use(express.static(path.join(__dirname, "public")));
 
+app.set(
+    "views",
+    path.join(__dirname, "views")
+);
+
+
+// STATIC FILES
+app.use(
+    express.static(
+        path.join(__dirname, "public")
+    )
+);
+
+
+// BASIC MIDDLEWARE
 app.use(cors());
-// basic middleware
+
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// connect to db before any route that needs it, but fail with a clear message instead of crashing the whole app
-app.use(async (req, res, next) => {
-    try {
-        await connectDB();
-        next();
-    } catch (err) {
-        console.error("DB connection error:", err.message);
-        res.status(500).send("Database connection failed. Please try again shortly.");
-    }
-});
-
-
-// session store - wrapped so a bad mongo uri doesn't crash app startup
-const sessionStore = MongoStore.create({
-    mongoUrl: process.env.MONGO_URI,
-    collectionName: "sessions",
-    ttl: 60 * 60 * 24
-});
 
 app.use(
-    session({
-        secret: process.env.SESSION_SECRET || "smart-ro-secret",
-
-        resave: false,
-        saveUninitialized: false,
-
-        store: sessionStore,
-
-        cookie: {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 1000 * 60 * 60 * 24
-        }
+    express.urlencoded({
+        extended: true
     })
 );
 
 
+// DATABASE + SESSION
+let sessionMiddleware = null;
 
-// routes
-const mainRoutes = require("./routes/mainRoutes");
-const authRoutes = require("./routes/authRoutes");
+let sessionInitPromise = null;
 
-const adminRoutes = require("./routes/adminRoutes");
-const customerRoutes = require("./routes/customerRoutes");
-const technicianRoutes = require("./routes/technicianRoutes");
-const adminTechnicianRoutes = require(
-    "./routes/adminTechnicianRoutes"
-);
 
-const AI_featureRoutes = require("./routes/AI_featureRoutes");
-const productsRoutes = require("./routes/productsRoutes");
-const serviceRoutes = require("./routes/serviceRoutes");
-const contactRoutes = require("./routes/contactRoutes");
+async function getSessionMiddleware() {
 
-const roMachineRoutes = require("./routes/roMachineRoutes");
-const serviceHistoryRoutes = require("./routes/serviceHistoryRoutes");
-const technicianJobRoutes = require("./routes/technicianJobRoutes")
+    // Already initialized
+    if (sessionMiddleware) {
+        return sessionMiddleware;
+    }
 
-const OpenAI = require("openai");
 
-let client = null;
-if (process.env.OPENAI_API_KEY &&
-    !process.env.OPENAI_API_KEY.startsWith("Your_")) {
+    // Prevent multiple initialization attempts
+    if (!sessionInitPromise) {
 
-    client = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY
-    });
+        sessionInitPromise = (async () => {
 
-    console.log("OpenAI configured successfully.");
-} else {
-    console.log("OpenAI API key not configured. AI feature is disabled.");
+            // Connect to MongoDB
+            const connection = await connectDB();
+
+
+            // IMPORTANT:
+            // Use the SAME MongoDB client that
+            // Mongoose is already using.
+            const mongoClient =
+                connection.connection.getClient();
+
+
+            // Create MongoDB session store
+            const sessionStore =
+                MongoStore.create({
+
+                    client: mongoClient,
+
+                    collectionName: "sessions",
+
+                    ttl: 60 * 60 * 24,
+
+                    autoRemove: "native"
+
+                });
+
+
+            // Create Express session middleware
+            sessionMiddleware = session({
+
+                secret:
+                    process.env.SESSION_SECRET ||
+                    "smart-ro-secret",
+
+                resave: false,
+
+                saveUninitialized: false,
+
+                store: sessionStore,
+
+                cookie: {
+
+                    httpOnly: true,
+
+                    secure:
+                        process.env.NODE_ENV ===
+                        "production",
+
+                    sameSite: "lax",
+
+                    maxAge:
+                        1000 *
+                        60 *
+                        60 *
+                        24
+
+                }
+
+            });
+
+
+            console.log(
+                "Session store initialized successfully."
+            );
+
+
+            return sessionMiddleware;
+
+        })().catch((error) => {
+
+            // Allow another request to retry
+            sessionInitPromise = null;
+
+            throw error;
+
+        });
+
+    }
+
+
+    return sessionInitPromise;
 }
 
-// load logged-in user
+
+// SESSION INITIALIZATION
+app.use(
+    async (req, res, next) => {
+
+        try {
+
+            const middleware =
+                await getSessionMiddleware();
+
+            middleware(
+                req,
+                res,
+                next
+            );
+
+        } catch (error) {
+
+            console.error(
+                "SESSION / DATABASE ERROR:",
+                error
+            );
+
+            return res
+                .status(500)
+                .send(
+                    "Database connection failed. Please try again shortly."
+                );
+        }
+
+    }
+);
+
+
+// ROUTES
+const mainRoutes =
+    require("./routes/mainRoutes");
+
+const authRoutes =
+    require("./routes/authRoutes");
+
+const adminRoutes =
+    require("./routes/adminRoutes");
+
+const customerRoutes =
+    require("./routes/customerRoutes");
+
+const technicianRoutes =
+    require("./routes/technicianRoutes");
+
+const adminTechnicianRoutes =
+    require("./routes/adminTechnicianRoutes");
+
+const AI_featureRoutes =
+    require("./routes/AI_featureRoutes");
+
+const productsRoutes =
+    require("./routes/productsRoutes");
+
+const serviceRoutes =
+    require("./routes/serviceRoutes");
+
+const contactRoutes =
+    require("./routes/contactRoutes");
+
+const roMachineRoutes =
+    require("./routes/roMachineRoutes");
+
+const serviceHistoryRoutes =
+    require("./routes/serviceHistoryRoutes");
+
+const technicianJobRoutes =
+    require("./routes/technicianJobRoutes");
+
+
+// LOAD CURRENT USER
 app.use(loadUser);
 
 
-// routes
+// REGISTER ROUTES
 app.use("/", mainRoutes);
+
 app.use("/", authRoutes);
 
 app.use("/", adminRoutes);
+
 app.use("/", customerRoutes);
+
 app.use("/", technicianRoutes);
+
 app.use("/", adminTechnicianRoutes);
 
 app.use("/", AI_featureRoutes);
+
 app.use("/", productsRoutes);
+
 app.use("/", serviceRoutes);
+
 app.use("/", contactRoutes);
 
 app.use("/", roMachineRoutes);
+
 app.use("/", serviceHistoryRoutes);
+
 app.use("/", technicianJobRoutes);
 
 
+// LOCAL SERVER
 if (require.main === module) {
-    const port = process.env.PORT || 3000;
 
-    app.listen(port, () => {
-        console.log(`server running on http://localhost:${port}`);
-    });
+    const port =
+        process.env.PORT || 3000;
+
+    app.listen(
+        port,
+        () => {
+
+            console.log(
+                `server running on http://localhost:${port}`
+            );
+
+        }
+    );
+
 }
 
-module.exports = app;
 
+// VERCEL EXPORT
+module.exports = app;
 
 
 // const port = 3000;
