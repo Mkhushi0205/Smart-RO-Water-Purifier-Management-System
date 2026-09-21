@@ -35,8 +35,9 @@ const loadUser = async (req, res, next) => {
 
     } catch (error) {
         console.error("Error loading user:", error);
-        res.locals.user = null;
         req.user = null;
+        res.locals.user = null;
+        
         next();
     }
 };
@@ -54,7 +55,7 @@ const requireAuth = (req, res, next) => {
 
 
 // check whether the logged-in user the required role
-const requireRole = (role) => {
+const requireRole = (requiredRole) => {
     return (req, res, next) => {
         if (!req.user) {
             return res.redirect("/login");
@@ -70,7 +71,7 @@ const requireRole = (role) => {
 
         console.log(
             "ROLE CHECK :", req.user.email,
-            "EXPECTED :", exectedRole,
+            "EXPECTED :", expectedRole,
             "ACTUAL :", actualRole
         );
 

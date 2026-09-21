@@ -7,7 +7,7 @@ const app = express();
 const path =  require("path");
 const cors = require("cors");
 const session =  require("express-session");
-const MongoStore = require("connect-mongo");
+const { MongoStore } = require("connect-mongo");
 
 app.set("trust proxy", 1);
 
@@ -41,32 +41,30 @@ app.use(async (req, res, next) => {
 
 
 // session store - wrapped so a bad mongo uri doesn't crash app startup
-let sessionStore;
-try {
-    sessionStore = MongoStore.create({
-        mongoUrl: process.env.MONGO_URI,
-        collectionName: "sessions",
-        ttl: 60 * 60 * 24
-    });
-} catch (err) {
-    console.error("Session store init failed, falling back to memoryStore:", err.message);
-    sessionStore = undefined;
-}
+const sessionStore = MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    collectionName: "sessions",
+    ttl: 60 * 60 * 24
+});
 
-app.use(session({
-    secret: process.env.SESSION_SECRET || "smart-ro-secret",
-    resave: false,
-    saveUninitialized: false,
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET || "smart-ro-secret",
 
-    store: sessionStore,
+        resave: false,
+        saveUninitialized: false,
 
-    cookie: {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 1000 * 60 * 60 * 24
-    }
-}));
+        store: sessionStore,
+
+        cookie: {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 1000 * 60 * 60 * 24
+        }
+    })
+);
+
 
 
 // routes
