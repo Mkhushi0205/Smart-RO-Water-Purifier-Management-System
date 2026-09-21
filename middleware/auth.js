@@ -5,27 +5,31 @@ const loadUser = async (req, res, next) => {
 
     try {
         res.locals.user = null;
-        req.user = null;
+        // req.user = null;
 
         // no logged-in user
         if (!req.session || !req.session.userId) {
             return next();
         }
 
-        const user = await User.findById(req.session.userId).select("-password");
+        const user = await User.findById(req.session.userId)
+            .select("-password");
 
         if(!user) {
             req.session.destroy(() => {});
             return next();
         }
 
-        // normalize role
-        user.role = String(user.role || "")
-            .trim()
-            .toLowerCase();
-
         req.user = user;
         res.locals.user = user;
+
+        // // normalize role
+        // user.role = String(user.role || "")
+        //     .trim()
+        //     .toLowerCase();
+
+        // req.user = user;
+        // res.locals.user = user;
 
         console.log(
             "LOAD USER :", user.email,
@@ -35,7 +39,6 @@ const loadUser = async (req, res, next) => {
 
     } catch (error) {
         console.error("Error loading user:", error);
-        req.user = null;
         res.locals.user = null;
         
         next();
@@ -71,17 +74,11 @@ const requireRole = (requiredRole) => {
 
         console.log(
             "ROLE CHECK :", req.user.email,
-            "EXPECTED :", expectedRole,
-            "ACTUAL :", actualRole
+            "ACTUAL :", actualRole,
+            "EXPECTED :", expectedRole
         );
 
         if (actualRole !== expectedRole) {
-            console.log(
-                "ACCESS DENIED :", req.user.email,
-                "Eexpected :", expectedRole,
-                "ActualRole :", actualRole
-            );
-
             return res.status(403).render("error", {
                 title: "Access Denied",
                 message: "Yor do not have permission to access this page."

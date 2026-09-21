@@ -51,44 +51,70 @@ exports.postLogin = async (req, res) => {
         req.session.userId = user._id.toString();
 
 
-        // save the session completely BEFORE redirecting.
-        req.session.save((err) => {
-            if(err) {
-                console.error("SESSION SAVE ERROR :", err);
-
-                return res.status(500).send(
-                    "Unable to create login session. Please try again."
-                );
-            }
+        
 
         // important: normalize role s admin/ADMIN/"admin", don't accidentlly become customer\
-        const role = String(user.role || "")
-            .trim()
-            .toLowerCase();
+            const role = String(user.role || "")
+                .trim()
+                .toLowerCase();
 
-            // role-based redirect
-            if (role == "admin") {
+            console.log("FINAL LOGIN USER:", user.email);
+
+            console.log("FINAL LOGIN ROLE:", JSON.stringify(role));
+
+        // save the session completely BEFORE redirecting.
+            req.session.save((err) => {
+                if(err) {
+                    console.error("SESSION SAVE ERROR :", err);
+
+                    return res.status(500).send(
+                        "Unable to create login session. Please try again."
+                    );
+                }
+
+            // ADMIN
+            if (role === "admin") {
+
                 console.log("REDIRECTING ADMIN -> /admin-dashboard");
                 return res.redirect("/admin-dashboard");
             }
 
+
+            // TECHNICIAN
             if (role === "technician") {
-                console.log(
-                    "REDIRECTING TECHNICIAN -> /technician-dashboard");
-                    return res.redirect("/technician-dashboard");
+
+                console.log("REDIRECTING TECHNICIAN -> /technician-dashboard");
+                return res.redirect("/technician-dashboard");
             }
 
-            console.log("REDIRECTING CUSTOMER -> /customer-dashboard");
-            return res.redirect("/customer-dashboard");
+
+            // CUSTOMER
+            if (role === "customer") {
+
+                console.log("REDIRECTING CUSTOMER -> /customer-dashboard");
+                return res.redirect("/customer-dashboard");
+            }
+
+
+            // INVALID ROLE
+            console.error(
+                "INVALID USER ROLE:",
+                user.email,
+                JSON.stringify(user.role)
+            );
+
+            return res.status(403).send(
+                "Your account has an invalid role. Please contact the administrator."
+            );
         });
 
-        } catch (err) {
-            console.error("Login Error:", err);
-            return res.status(500).send(
-                "Internal Server Error"
-            );
-        }
-    };
+    } catch (err) {
+        console.error("Login Error:", err);
+        return res.status(500).send(
+            "Internal Server Error"
+        );
+    }
+};
 
 
 //get register
