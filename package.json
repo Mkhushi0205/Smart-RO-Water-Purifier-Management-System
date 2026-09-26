@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server_index.js",
     "dev": "nodemon server_index.js",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "fix-role": "node scripts/fixUserRole.js"
   },
   "keywords": [],
   "author": "Khushi",
